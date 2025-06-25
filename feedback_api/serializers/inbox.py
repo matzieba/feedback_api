@@ -21,3 +21,15 @@ class InboxCreateSerializer(serializers.ModelSerializer):
         secret = validated_data.pop('secret')
         tripcode = make_tripcode(username, secret)
         return Inbox.objects.create(signature=tripcode, **validated_data)
+
+class InboxPublicSerializer(serializers.ModelSerializer):
+    owner_name = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Inbox
+        fields = ['id', 'topic', 'expiration_date', 'allow_anonymous', 'owner_name']
+
+    def get_owner_name(self, obj):
+        if obj.signature and "!" in obj.signature:
+            return obj.signature.split("!")[0]
+        return None

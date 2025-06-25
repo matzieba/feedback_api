@@ -1,7 +1,19 @@
-from rest_framework import generics
-from ..models.inbox import Inbox
-from ..serializers.inbox import InboxCreateSerializer
+from rest_framework import viewsets, mixins
+from feedback_api.models.inbox import Inbox
+from feedback_api.serializers.inbox import (
+    InboxCreateSerializer,
+    InboxPublicSerializer,
+)
 
-class InboxCreateAPIView(generics.CreateAPIView):
+class InboxViewSet(mixins.ListModelMixin,
+                   mixins.RetrieveModelMixin,
+                   mixins.CreateModelMixin,
+                   viewsets.GenericViewSet):
     queryset = Inbox.objects.all()
-    serializer_class = InboxCreateSerializer
+
+    def get_serializer_class(self):
+        if self.action == "create":
+            return InboxCreateSerializer
+        return InboxPublicSerializer
+
+# TODO revise for privacy, add black
