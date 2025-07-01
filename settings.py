@@ -91,7 +91,14 @@ DATABASES = {
 }
 
 TRIPCODE_SALT = os.environ.get("TRIPCODE_SALT")
+if not TRIPCODE_SALT:
+    raise RuntimeError("TRIPCODE_SALT must be set in the environment!")
 
+DEFAULT_SEPARATOR = os.environ.get("DEFAULT_SEPARATOR", "!")
+ERR_CANNOT_EDIT_TOPIC = os.environ.get("ERR_CANNOT_EDIT_TOPIC", "You cannot edit the topic after replies.")
+ERR_EXPIRED_INBOX = os.environ.get("ERR_EXPIRED_INBOX", "Inbox has expired.")
+ERR_SIGNATURE_REQUIRED = os.environ.get("ERR_SIGNATURE_REQUIRED", "Signature is required for this inbox.")
+FORBIDDEN_USERNAME_CHARS = os.environ.get("FORBIDDEN_USERNAME_CHARS", "!")
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators

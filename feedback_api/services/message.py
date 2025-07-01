@@ -1,6 +1,6 @@
 from django.db.models import QuerySet
 
-from feedback_api.constants import ERR_EXPIRED_INBOX, ERR_SIGNATURE_REQUIRED
+from settings import ERR_EXPIRED_INBOX, ERR_SIGNATURE_REQUIRED
 from feedback_api.models.inbox import Inbox
 from feedback_api.models.message import Message
 from feedback_api.services.inbox import InboxService

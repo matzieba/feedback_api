@@ -40,7 +40,7 @@ def test_change_topic_fails_after_replies(inbox, message, settings):
     inbox.signature = make_tripcode(username, secret)
     inbox.save()
 
-    with pytest.raises(ValueError):
+    with pytest.raises(PermissionError):
         InboxService.change_topic(inbox, "nope", username=username, secret=secret)
 
 

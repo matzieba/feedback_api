@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from feedback_api.constants import FORBIDDEN_USERNAME_CHARS
+from settings import FORBIDDEN_USERNAME_CHARS
 
 
 def validate_secret(secret: str):
