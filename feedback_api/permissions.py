@@ -3,14 +3,11 @@ from feedback_api.models import Inbox
 
 
 class IsInboxOwner(BasePermission):
-    """
-    Allows access only to Inbox owner (tripcode-matching)
-    """
 
     message = "Forbidden: you are not the owner."
 
     def has_permission(self, request, view):
-        inbox_pk = view.kwargs.get("inbox_pk")  # URL kwarg
+        inbox_pk = view.kwargs.get("inbox_pk")
         if not inbox_pk:
             return False
         username = request.data.get("username") or request.query_params.get("username")

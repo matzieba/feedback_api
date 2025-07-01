@@ -28,7 +28,7 @@ class InboxViewSet(
 class InboxRepliesAPIView(APIView):
     permission_classes = [IsInboxOwner]
 
-    def post(self, request, inbox_pk):
+    def get(self, request, inbox_pk):
         inbox = get_object_or_404(Inbox, pk=inbox_pk)
         messages = inbox.messages.order_by("created_at")
         serializer = MessageReadSerializer(messages, many=True)

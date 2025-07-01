@@ -1,4 +1,3 @@
-# tests/test_message_service.py
 
 import pytest
 

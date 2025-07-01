@@ -8,10 +8,9 @@ from feedback_api.helpers import verify_tripcode
 class Inbox(TimeStampedModel):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     topic = models.CharField(max_length=250)
-    signature = models.CharField(max_length=128)  # tripcode string (owner signature)
+    signature = models.CharField(max_length=128)
     expiration_date = models.DateTimeField()
     allow_anonymous = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
 
     @property
     def is_expired(self):
@@ -36,11 +35,3 @@ class Inbox(TimeStampedModel):
         self.topic = new_topic
         self.save(update_fields=["topic"])
         return self
-
-    def get_replies_if_owner(self, username, secret):
-        if not self.owner_matches(username, secret):
-            raise PermissionError("Forbidden: Credentials don't match owner.")
-        return self.messages.order_by("created_at")
-
-    def __str__(self):
-        return f"Inbox({self.topic}, ID={self.id})"

@@ -1,4 +1,3 @@
-# tests/test_views.py
 
 import pytest
 from model_bakery import baker
