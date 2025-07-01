@@ -1,0 +1,11 @@
+Django
+djangorestframework
+django-model-utils
+django-environ
+psycopg2-binary
+
+pytest
+pytest-django
+pytest-cov
+black
+model-bakery

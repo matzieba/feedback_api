@@ -4,6 +4,7 @@ import settings
 
 DEFAULT_SEPARATOR = "!"
 
+
 def make_tripcode(username, secret, separator=DEFAULT_SEPARATOR):
     salt = settings.TRIPCODE_SALT
     raw = f"{username}:{secret}:{salt}".encode("utf-8")
@@ -11,6 +12,7 @@ def make_tripcode(username, secret, separator=DEFAULT_SEPARATOR):
     tripcode = f"{username}{separator}{digest}"
     # TODO check this
     return tripcode
+
 
 def verify_tripcode(tripcode, username, secret, separator=DEFAULT_SEPARATOR):
     expected_tripcode = make_tripcode(username, secret, separator)
