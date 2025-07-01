@@ -1,11 +1,12 @@
 from rest_framework import serializers
 from feedback_api.helpers import make_tripcode
 from feedback_api.models.inbox import Inbox
+from feedback_api.validators import validate_secret, validate_username
 
 
 class InboxCreateSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(write_only=True)
-    secret = serializers.CharField(write_only=True)
+    username = serializers.CharField(write_only=True, validators=[validate_username])
+    secret = serializers.CharField(write_only=True, validators=[validate_secret])
 
     class Meta:
         model = Inbox

@@ -2,7 +2,8 @@ import hashlib
 import hmac
 from django.conf import settings
 
-DEFAULT_SEPARATOR = "!"
+from feedback_api.constants import DEFAULT_SEPARATOR
+
 
 def make_tripcode(username: str, secret: str, separator: str = DEFAULT_SEPARATOR) -> str:
     salt = settings.TRIPCODE_SALT
