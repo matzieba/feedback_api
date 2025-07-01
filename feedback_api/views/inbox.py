@@ -30,6 +30,7 @@ class InboxRepliesAPIView(APIView):
         Unusual: Listing is done via POST to allow passing credentials.
         """
         inbox = get_object_or_404(Inbox, pk=inbox_pk)
+        self.check_object_permissions(request, inbox)
         messages = inbox.messages.order_by("created")
         serializer = MessageReadSerializer(messages, many=True)
         return Response(serializer.data)
@@ -39,6 +40,7 @@ class InboxEditTopicAPIView(APIView):
 
     def post(self, request, inbox_pk):
         inbox = get_object_or_404(Inbox, pk=inbox_pk)
+        self.check_object_permissions(request, inbox)
         new_topic = request.data.get("topic")
         try:
             InboxService.change_topic(
