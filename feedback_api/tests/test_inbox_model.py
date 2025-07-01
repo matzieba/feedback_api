@@ -1,11 +1,11 @@
 import pytest
 from feedback_api.helpers import make_tripcode
-
+from feedback_api.services.inbox import InboxService
 
 @pytest.mark.django_db
 def test_is_expired_logic(inbox, expired_inbox):
-    assert not inbox.is_expired
-    assert expired_inbox.is_expired
+    assert not InboxService.is_expired(inbox)
+    assert InboxService.is_expired(expired_inbox)
 
 
 @pytest.mark.django_db
@@ -15,9 +15,9 @@ def test_owner_matches_works(inbox, settings):
     inbox.signature = make_tripcode(username, secret)
     inbox.save()
 
-    assert inbox.owner_matches(username, secret)
-    assert not inbox.owner_matches("wronguser", secret)
-    assert not inbox.owner_matches(username, "wrongsecret")
+    assert InboxService.owner_matches(inbox, username, secret)
+    assert not InboxService.owner_matches(inbox, "wronguser", secret)
+    assert not InboxService.owner_matches(inbox, username, "wrongsecret")
 
 
 @pytest.mark.django_db
@@ -27,7 +27,8 @@ def test_change_topic_only_owner_and_no_replies(inbox, settings):
     inbox.signature = make_tripcode(username, secret)
     inbox.save()
     inbox.messages.all().delete()
-    inbox.change_topic("New topic here", username=username, secret=secret)
+
+    InboxService.change_topic(inbox, "New topic here", username=username, secret=secret)
 
     assert inbox.topic == "New topic here"
 
@@ -40,7 +41,7 @@ def test_change_topic_fails_after_replies(inbox, message, settings):
     inbox.save()
 
     with pytest.raises(ValueError):
-        inbox.change_topic("nope", username=username, secret=secret)
+        InboxService.change_topic(inbox, "nope", username=username, secret=secret)
 
 
 @pytest.mark.django_db
@@ -49,4 +50,4 @@ def test_change_topic_fails_not_owner(inbox, settings):
     inbox.save()
 
     with pytest.raises(PermissionError):
-        inbox.change_topic("blabla", username="hacker", secret="sekret")
+        InboxService.change_topic(inbox, "blabla", username="hacker", secret="sekret")

@@ -12,26 +12,5 @@ class Inbox(TimeStampedModel):
     expiration_date = models.DateTimeField()
     allow_anonymous = models.BooleanField(default=True)
 
-    @property
-    def is_expired(self):
-        return timezone.now() >= self.expiration_date
-
-    @property
-    def replies_count(self):
-        return self.messages.count()
-
-    @property
-    def can_edit_topic(self):
-        return self.replies_count == 0
-
-    def owner_matches(self, username, secret):
-        return verify_tripcode(self.signature, username, secret)
-
-    def change_topic(self, new_topic, username, secret):
-        if not self.owner_matches(username, secret):
-            raise PermissionError("Only the owner can change the topic")
-        if not self.can_edit_topic:
-            raise ValueError("Cannot edit topic after replies posted.")
-        self.topic = new_topic
-        self.save(update_fields=["topic"])
-        return self
+    def __str__(self):
+        return f"Inbox({self.topic}, ID={self.id})"

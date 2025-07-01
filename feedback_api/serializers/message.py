@@ -11,4 +11,4 @@ class MessageCreateSerializer(serializers.ModelSerializer):
 class MessageReadSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
-        fields = ["id", "body", "signature", "created_at"]
+        fields = ["id", "body", "signature", "created"]
